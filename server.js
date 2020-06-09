@@ -8,4 +8,9 @@ connectDB();
 
 // Init middleware
 app.use(express.json({ extended: false }));
+
+// Routes
+// Events
+app.use("/events", require("./routes/events"));
+
 module.exports = app;
