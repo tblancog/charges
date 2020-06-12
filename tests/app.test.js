@@ -33,7 +33,7 @@ describe("Events", () => {
   it("Should POST event ", async () => {
     await request(app)
       .post("/events")
-      .send({ name: "John Doe", createdAt: Date.now() })
+      .send({ name: "John Doe", date: Date.now() })
       .expect(200);
   });
   it("Should fail POST event ", async () => {
