@@ -28,23 +28,46 @@ describe("Sanitiy tests", () => {
 });
 
 describe("Events", () => {
+  const event = {
+    event_id: 4,
+    amount: 500,
+    currency: "USD",
+    user: "5ee2f37b81dc478153e98662",
+    event_type: "CLASIFICADO",
+    date: "2020-06-11T14:02:03.409Z",
+  };
   it("Should GET events", async () => {
-    await request(app).get("/events").expect(200);
+    const response = await request(app).get("/events");
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(0);
   });
-  it("Should POST event ", async () => {
-    await request(app)
-      .post("/events")
-      .send({
-        event_id: 4,
-        amount: 500,
-        currency: "USD",
-        user: "5ee2f37b81dc478153e98662",
-        event_type: "CLASIFICADO",
-        date: "2020-06-11T14:02:03.409Z",
-      })
-      .expect(200);
+  it("Should GET created event after POST", async () => {
+    await request(app).post("/events").send(event);
+    const response = await request(app).get("/events");
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(1);
   });
   it("Should fail POST event ", async () => {
     await request(app).post("/events").expect(500);
+  });
+});
+describe("Users", () => {
+  const user = {
+    name: "Tony",
+    status: "ACTIVO",
+  };
+  it("Should GET users", async () => {
+    const response = await request(app).get("/users");
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(0);
+  });
+  it("Should GET created user after POST", async () => {
+    await request(app).post("/users").send(user);
+    const response = await request(app).get("/users");
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(1);
+  });
+  it("Should fail POST user ", async () => {
+    await request(app).post("/users").expect(500);
   });
 });
