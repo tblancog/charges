@@ -8,9 +8,10 @@ beforeAll(async () => {
   server = app.listen(3001);
 });
 
-afterEach(async () => await clearDatabase());
+// afterEach(async () => await clearDatabase());
 
 afterAll(async (done) => {
+  await clearDatabase();
   await closeDatabase();
   server.close(done);
 });
@@ -33,7 +34,14 @@ describe("Events", () => {
   it("Should POST event ", async () => {
     await request(app)
       .post("/events")
-      .send({ name: "John Doe", date: Date.now() })
+      .send({
+        event_id: 4,
+        amount: 500,
+        currency: "USD",
+        user: "5ee2f37b81dc478153e98662",
+        event_type: "CLASIFICADO",
+        date: "2020-06-11T14:02:03.409Z",
+      })
       .expect(200);
   });
   it("Should fail POST event ", async () => {

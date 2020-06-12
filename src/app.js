@@ -5,6 +5,7 @@ const app = express();
  * Services
  */
 const EventService = require("./services/event");
+const UserService = require("./services/user");
 
 /**
  * Routes
@@ -33,13 +34,36 @@ app.get("/events", async (req, res, next) => {
  * Post events
  */
 app.post("/events", async (req, res, next) => {
-  const { name, createdAt } = req.body;
   try {
-    const event = await EventService.createEvent(name, createdAt);
+    const event = await EventService.createEvent(req.body);
     res.json(event);
   } catch (e) {
     next(e);
   }
 });
 
+/**
+ * Get users
+ */
+app.get("/users", async (req, res, next) => {
+  try {
+    const users = await UserService.listUsers();
+    res.json(users);
+  } catch (e) {
+    next();
+  }
+});
+
+/**
+ * Post users
+ */
+app.post("/users", async (req, res, next) => {
+  const { name, status } = req.body;
+  try {
+    const event = await UserService.createUser(name, status);
+    res.json(event);
+  } catch (e) {
+    next(e);
+  }
+});
 module.exports = app;

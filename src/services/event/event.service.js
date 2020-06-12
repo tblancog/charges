@@ -1,10 +1,24 @@
-const createEvent = (Event) => (name, createdAt) => {
-  const event = new Event({ name, createdAt });
+const createEvent = (Event) => ({
+  event_id,
+  amount,
+  currency,
+  user,
+  event_type,
+  date,
+}) => {
+  const event = new Event({
+    event_id,
+    amount,
+    currency,
+    user,
+    event_type,
+    date,
+  });
   return event.save();
 };
 
 const listEvents = (Event) => () => {
-  return Event.find({}).sort("-createdAt");
+  return Event.find({}).populate("user").sort("-createdAt");
 };
 
 module.exports = (Event) => {
