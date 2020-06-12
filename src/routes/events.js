@@ -8,10 +8,11 @@ const Event = require("../models/Event");
  * @access Private
  */
 router.post("/", async (req, res) => {
-  const { name } = req.body;
+  const { name, createdAt } = req.body;
   try {
     const event = new Event({
       name,
+      createdAt,
     });
     await event.save();
     res.json(event);

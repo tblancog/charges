@@ -1,18 +1,39 @@
 const mongoose = require("mongoose");
-const config = require("config");
-const uri = config.get("mongoURI");
+const { MongoMemoryServer } = require("mongodb-memory-server");
+const mongod = new MongoMemoryServer();
 
+/**
+ * Connect to database.
+ */
 const connect = async () => {
-  try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: true,
-    });
-    console.log("MongoDB connected!");
-  } catch (err) {
-    console.log(err.message);
-    process.exit(1);
+  const uri = await mongod.getConnectionString();
+  const mongooseOpts = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  };
+
+  await mongoose.connect(uri, mongooseOpts);
+};
+
+/**
+ * Drop database, close the connection and stop mongod.
+ */
+const closeDatabase = async () => {
+  await mongoose.connection.dropDatabase();
+  await mongoose.connection.close();
+  await mongod.stop();
+};
+
+/**
+ * Remove all the data for all db collections.
+ */
+const clearDatabase = async () => {
+  const collections = mongoose.connection.collections;
+
+  for (const key in collections) {
+    const collection = collections[key];
+    await collection.deleteMany();
   }
 };
-module.exports = connect;
+
+module.exports = { connect, closeDatabase, clearDatabase };
