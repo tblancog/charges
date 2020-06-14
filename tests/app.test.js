@@ -36,7 +36,7 @@ describe("Events", () => {
     event_type: "CLASIFICADO",
     date: "2020-06-11T14:02:03.409Z",
   };
-  it("Should GET events", async () => {
+  it("Should GET empty events", async () => {
     const response = await request(app).get("/events");
     expect(response.status).toBe(200);
     expect(response.body.length).toBe(0);
@@ -69,5 +69,15 @@ describe("Users", () => {
   });
   it("Should fail POST user ", async () => {
     await request(app).post("/users").expect(500);
+  });
+  it("Should GET user by id", async () => {
+    // Create user
+    const created = await request(app).post("/users").send(user);
+    expect(created.status).toBe(200);
+
+    // Get that user by id
+    const response = await request(app).get(`/users/${created.body._id}`);
+    expect(response.status).toBe(200);
+    expect(response.body._id).toBe(created.body._id);
   });
 });

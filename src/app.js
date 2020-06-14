@@ -55,6 +55,17 @@ app.get("/users", async (req, res, next) => {
 });
 
 /**
+ * Get user by id
+ */
+app.get("/users/:id", async (req, res, next) => {
+  try {
+    res.json(await UserService.getUserById(req.params.id));
+  } catch (e) {
+    next();
+  }
+});
+
+/**
  * Post users
  */
 app.post("/users", async (req, res, next) => {
