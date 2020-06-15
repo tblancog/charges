@@ -6,6 +6,7 @@ const app = express();
  */
 const EventService = require("./services/event");
 const UserService = require("./services/user");
+const BillingService = require("./services/billing");
 
 /**
  * Routes
@@ -77,4 +78,22 @@ app.post("/users", async (req, res, next) => {
     next(e);
   }
 });
+
+// Get user billing by month/year
+app.get("/users/:id/billing", async (req, res, next) => {
+  try {
+    let billing = await BillingService.getBilling(req.params.id);
+    // transform to desired output
+    billing = billing.map((bill) => {
+      return {
+        billing_date: `${bill._id.month}/${bill._id.year}`,
+        charges: bill.docs,
+      };
+    });
+    res.json(billing);
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = app;
