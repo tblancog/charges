@@ -70,7 +70,7 @@ body JSON data:
 {
   "event_id": 1,
   "amount": 600,
-  "currency": "PESOS",
+  "currency": "ARS",
   "user": "<user created id>",
   "event_type": "MERCADOPAGO",
   "date": "2020-05-11T14:02:03.409Z"
