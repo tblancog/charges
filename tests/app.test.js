@@ -31,7 +31,7 @@ describe("Events", () => {
   const event = {
     event_id: 4,
     amount: 500,
-    currency: "USD",
+    currency: "ARS",
     user: "5ee2f37b81dc478153e98662",
     event_type: "CLASIFICADO",
     date: "2020-06-11T14:02:03.409Z",
@@ -89,7 +89,7 @@ describe("Users", () => {
     const event = {
       event_id: 5,
       amount: 600,
-      currency: "PESOS",
+      currency: "ARS",
       user: "5ee2f37b81dc478153e98660",
       event_type: "MERCADOPAGO",
       date: "2020-04-11T14:02:03.409Z",

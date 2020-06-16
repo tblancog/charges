@@ -7,6 +7,7 @@ const app = express();
 const EventService = require("./services/event");
 const UserService = require("./services/user");
 const BillingService = require("./services/billing");
+const PaymentService = require("./services/payment");
 
 /**
  * Routes
@@ -91,6 +92,41 @@ app.get("/users/:id/billing", async (req, res, next) => {
       };
     });
     res.json(billing);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Post payments
+app.post("/payments", async (req, res, next) => {
+  const { user, event, amount } = req.body;
+  try {
+    const response = await PaymentService.createPayment({
+      user,
+      event,
+      amount,
+    });
+    res.json(response);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Get Payments
+app.get("/payments", async (req, res, next) => {
+  try {
+    const payments = await PaymentService.getPayments();
+    res.json(payments);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Get user Payments
+app.get("/users/:id/payments", async (req, res, next) => {
+  try {
+    const payments = await PaymentService.getPayments(req.params.id);
+    res.json(payments);
   } catch (e) {
     next(e);
   }

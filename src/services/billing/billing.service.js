@@ -6,15 +6,29 @@ const getBilling = (Event) => (userId) => {
       $group: {
         _id: { year: { $year: "$date" }, month: { $month: "$date" } },
         docs: {
-          $push: "$$ROOT",
+          $push: {
+            _id: "$_id",
+            amount: "$amount",
+            currency: "$currency",
+            event_type: "$event_type",
+            event: "$event",
+            date: "$date",
+            event: "$event",
+          },
         },
       },
     },
-  ]).sort("_id.year, _id.month");
+    {
+      $sort: {
+        "_id.year": 1,
+        "_id.month": 1,
+      },
+    },
+  ]);
 };
 
-module.exports = (Event) => {
+module.exports = (Event, Payment) => {
   return {
-    getBilling: getBilling(Event),
+    getBilling: getBilling(Event, Payment),
   };
 };
